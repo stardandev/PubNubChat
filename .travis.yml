@@ -1,0 +1,23 @@
+language: node_js
+node_js: node
+sudo: false
+cache: false
+
+stages:
+  - name: "application test & build"
+
+jobs:
+  include:
+    - stage: "application test & build"
+      name: "Team Chat Reference Application"
+      before_install:
+        - |
+          echo '{
+            "publishKey": "${PROD_PUBLISH_KEY}",
+            "subscribeKey": "${PROD_SUBSCRIBE_KEY}"
+          }' >> ./src/config/pubnub-keys.json
+      install:
+        - npm install
+      script:
+        - npm run test
+        - npm run build
